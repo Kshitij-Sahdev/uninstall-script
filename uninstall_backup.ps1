@@ -14,13 +14,13 @@ function Uninstall-WingetPackage {
         Write-Host "Uninstalling $DisplayName..." -ForegroundColor Cyan
         try {
             winget uninstall --id $PackageId --silent --accept-source-agreements
-            Write-Host "Successfully uninstalled $DisplayName" -ForegroundColor Green
+            Write-Host "✓ Successfully uninstalled $DisplayName" -ForegroundColor Green
         }
         catch {
-            Write-Host "Failed to uninstall $DisplayName" -ForegroundColor Red
+            Write-Host "✗ Failed to uninstall $DisplayName" -ForegroundColor Red
         }
     } else {
-        Write-Host "Skipped $DisplayName" -ForegroundColor Gray
+        Write-Host "⊘ Skipped $DisplayName" -ForegroundColor Gray
     }
 }
 
@@ -33,18 +33,18 @@ function Uninstall-MSIXPackage {
         Write-Host "Uninstalling $DisplayName..." -ForegroundColor Cyan
         try {
             Get-AppxPackage -Name "*$PackageName*" | Remove-AppxPackage
-            Write-Host "Successfully uninstalled $DisplayName" -ForegroundColor Green
+            Write-Host "✓ Successfully uninstalled $DisplayName" -ForegroundColor Green
         }
         catch {
-            Write-Host "Failed to uninstall $DisplayName" -ForegroundColor Red
+            Write-Host "✗ Failed to uninstall $DisplayName" -ForegroundColor Red
         }
     } else {
-        Write-Host "Skipped $DisplayName" -ForegroundColor Gray
+        Write-Host "⊘ Skipped $DisplayName" -ForegroundColor Gray
     }
 }
 
-# Development Tools and IDEs
-Write-Host "=== Development Tools and IDEs ===" -ForegroundColor Magenta
+# Development Tools & IDEs
+Write-Host "=== Development Tools & IDEs ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Microsoft.VisualStudioCode" "Visual Studio Code"
 Uninstall-WingetPackage "Anysphere.Cursor" "Cursor"
 Uninstall-WingetPackage "JetBrains.IntelliJIDEA.Community" "IntelliJ IDEA Community"
@@ -52,18 +52,19 @@ Uninstall-WingetPackage "Microsoft.VisualStudio.2019.BuildTools" "Visual Studio 
 
 # Android Development
 Write-Host "`n=== Android Development ===" -ForegroundColor Magenta
+# Android Studio (ARP entry - needs manual removal or use Programs and Features)
 Write-Host "Do you want to uninstall Android Studio manually? (y/n): " -ForegroundColor Yellow -NoNewline
 $androidResponse = Read-Host
 if ($androidResponse -eq "y" -or $androidResponse -eq "Y") {
-    Write-Host "Please uninstall Android Studio manually from Windows Settings - Android Studio" -ForegroundColor Cyan
+    Write-Host "Please uninstall Android Studio manually from Settings > Apps > Android Studio" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling Android Studio..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Android Studio" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Android Studio" -ForegroundColor Gray
 }
 
-# Programming Languages and Runtimes
-Write-Host "`n=== Programming Languages and Runtimes ===" -ForegroundColor Magenta
+# Programming Languages & Runtimes
+Write-Host "`n=== Programming Languages & Runtimes ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Python.Python.3.13" "Python 3.13"
 Uninstall-WingetPackage "Python.Python.3.12" "Python 3.12"
 Uninstall-WingetPackage "Python.Launcher" "Python Launcher"
@@ -89,11 +90,11 @@ Uninstall-WingetPackage "GitHub.GitHubDesktop" "GitHub Desktop"
 Write-Host "`n=== Development Databases ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Oracle.MySQL" "MySQL Installer"
 Uninstall-WingetPackage "Oracle.MySQLWorkbench" "MySQL Workbench"
-
+# Note: MySQL Server instances need manual removal
 Write-Host "Do you want to uninstall MySQL Server instances manually? (y/n): " -ForegroundColor Yellow -NoNewline
 $mysqlResponse = Read-Host
 if ($mysqlResponse -eq "y" -or $mysqlResponse -eq "Y") {
-    Write-Host "Please uninstall the following MySQL components manually from Windows Settings:" -ForegroundColor Cyan
+    Write-Host "Please uninstall the following MySQL components manually from Settings > Apps:" -ForegroundColor Cyan
     Write-Host "- MySQL Server 8.3" -ForegroundColor White
     Write-Host "- MySQL Server 8.0" -ForegroundColor White
     Write-Host "- MySQL Shell" -ForegroundColor White
@@ -102,7 +103,7 @@ if ($mysqlResponse -eq "y" -or $mysqlResponse -eq "Y") {
     Write-Host "Press any key after uninstalling MySQL components..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped MySQL Server components" -ForegroundColor Gray
+    Write-Host "⊘ Skipped MySQL Server components" -ForegroundColor Gray
 }
 
 # Development Tools
@@ -111,17 +112,17 @@ Uninstall-WingetPackage "Docker.DockerDesktop" "Docker Desktop"
 Uninstall-WingetPackage "Postman.Postman" "Postman"
 Uninstall-WingetPackage "Kitware.CMake" "CMake"
 
-# Data Science and Analysis
-Write-Host "`n=== Data Science and Analysis ===" -ForegroundColor Magenta
+# Data Science & Analysis
+Write-Host "`n=== Data Science & Analysis ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "RProject.R" "R for Windows"
 Uninstall-WingetPackage "Posit.RStudio" "RStudio"
 Uninstall-WingetPackage "Anaconda.Miniconda3" "Miniconda3"
 
-# Windows SDKs and Build Tools
-Write-Host "`n=== Windows SDKs and Build Tools ===" -ForegroundColor Magenta
+# Windows SDKs & Build Tools
+Write-Host "`n=== Windows SDKs & Build Tools ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Microsoft.WindowsSDK.10.0.19041" "Windows SDK"
 
-# Visual C++ Redistributables
+# Visual C++ Redistributables (Keep these as they're needed by many applications)
 Write-Host "`n=== Visual C++ Redistributables ===" -ForegroundColor Magenta
 Write-Host "Do you want to uninstall Visual C++ Redistributables? (NOT RECOMMENDED) (y/n): " -ForegroundColor Red -NoNewline
 $vcredistResponse = Read-Host
@@ -137,22 +138,22 @@ if ($vcredistResponse -eq "y" -or $vcredistResponse -eq "Y") {
     Uninstall-WingetPackage "Microsoft.VCRedist.2010.x86" "Visual C++ 2010 Redistributable (x86)"
     Uninstall-WingetPackage "Microsoft.XNARedist" "Microsoft XNA Framework Redistributable"
 } else {
-    Write-Host "Keeping Visual C++ Redistributables (RECOMMENDED)" -ForegroundColor Green
+    Write-Host "✓ Keeping Visual C++ Redistributables (RECOMMENDED)" -ForegroundColor Green
 }
 
-# Node.js
+# Node.js (ARP entry)
 Write-Host "`n=== Node.js ===" -ForegroundColor Magenta
 Write-Host "Do you want to uninstall Node.js manually? (y/n): " -ForegroundColor Yellow -NoNewline
 $nodeResponse = Read-Host
 if ($nodeResponse -eq "y" -or $nodeResponse -eq "Y") {
-    Write-Host "Please uninstall Node.js manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall Node.js manually from Settings > Apps > Node.js" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling Node.js..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Node.js" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Node.js" -ForegroundColor Gray
 }
 
-# Game Development Tools
+# Game Development (Tiled)
 Write-Host "`n=== Game Development Tools ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Tiled.Tiled" "Tiled Map Editor"
 
@@ -166,63 +167,64 @@ Uninstall-WingetPackage "Google.ChromeRemoteDesktopHost" "Chrome Remote Desktop 
 Write-Host "Do you want to uninstall Chrome Remote Desktop? (y/n): " -ForegroundColor Yellow -NoNewline
 $chromeRemoteResponse = Read-Host
 if ($chromeRemoteResponse -eq "y" -or $chromeRemoteResponse -eq "Y") {
-    Write-Host "Please uninstall Chrome Remote Desktop manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall Chrome Remote Desktop manually from Settings > Apps" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling Chrome Remote Desktop..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Chrome Remote Desktop" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Chrome Remote Desktop" -ForegroundColor Gray
 }
 
-# Windows Subsystem for Linux
+# WSL (Windows Subsystem for Linux)
 Write-Host "`n=== Windows Subsystem for Linux ===" -ForegroundColor Magenta
 Uninstall-WingetPackage "Canonical.Ubuntu" "Ubuntu"
 Uninstall-MSIXPackage "WindowsSubsystemForLinux" "Windows Subsystem for Linux"
 
 # Additional Development Tools
 Write-Host "`n=== Additional Development Tools ===" -ForegroundColor Magenta
+# VirtualBox for development environments
 Write-Host "Do you want to uninstall Oracle VirtualBox manually? (y/n): " -ForegroundColor Yellow -NoNewline
 $vboxResponse = Read-Host
 if ($vboxResponse -eq "y" -or $vboxResponse -eq "Y") {
-    Write-Host "Please uninstall Oracle VirtualBox 7.1.4 manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall Oracle VirtualBox 7.1.4 manually from Settings > Apps" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling VirtualBox..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Oracle VirtualBox" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Oracle VirtualBox" -ForegroundColor Gray
 }
 
 # Networking Development Tool
 Uninstall-WingetPackage "Cisco.PacketTracer" "Cisco Packet Tracer"
 
-# PlayStation SDK
+# PlayStation SDK (Game Development)
 Write-Host "Do you want to uninstall PlayStation PC SDK Runtime? (y/n): " -ForegroundColor Yellow -NoNewline
 $playstationResponse = Read-Host
 if ($playstationResponse -eq "y" -or $playstationResponse -eq "Y") {
-    Write-Host "Please uninstall PlayStation(R) PC SDK Runtime manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall PlayStation(R) PC SDK Runtime manually from Settings > Apps" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling PlayStation SDK..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped PlayStation PC SDK Runtime" -ForegroundColor Gray
+    Write-Host "⊘ Skipped PlayStation PC SDK Runtime" -ForegroundColor Gray
 }
 
-# CodeTantra
+# CodeTantra (Coding Platform)
 Write-Host "Do you want to uninstall CodeTantra SEA? (y/n): " -ForegroundColor Yellow -NoNewline
 $codetantraResponse = Read-Host
 if ($codetantraResponse -eq "y" -or $codetantraResponse -eq "Y") {
-    Write-Host "Please uninstall CodeTantra SEA 3.0.7 manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall CodeTantra SEA 3.0.7 manually from Settings > Apps" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling CodeTantra..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped CodeTantra SEA" -ForegroundColor Gray
+    Write-Host "⊘ Skipped CodeTantra SEA" -ForegroundColor Gray
 }
 
-# Arc Browser
+# Arc Browser (Developer Browser)
 Uninstall-WingetPackage "TheBrowserCompany.Arc" "Arc Browser"
 
 # Windows Driver Development Kit components
 Write-Host "Do you want to uninstall Windows Driver Development components? (y/n): " -ForegroundColor Yellow -NoNewline
 $wdkResponse = Read-Host
 if ($wdkResponse -eq "y" -or $wdkResponse -eq "Y") {
-    Write-Host "Please uninstall the following manually from Windows Settings Programs:" -ForegroundColor Cyan
+    Write-Host "Please uninstall the following manually from Settings > Apps:" -ForegroundColor Cyan
     Write-Host "- X64 Debuggers And Tools" -ForegroundColor White
     Write-Host "- X86 Debuggers And Tools" -ForegroundColor White
     Write-Host "- Windows Driver Testing Framework (WDTF)" -ForegroundColor White
@@ -230,22 +232,22 @@ if ($wdkResponse -eq "y" -or $wdkResponse -eq "Y") {
     Write-Host "Press any key after uninstalling WDK components..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Windows Driver Development components" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Windows Driver Development components" -ForegroundColor Gray
 }
 
 # Microsoft Visual Studio Installer
 Write-Host "Do you want to uninstall Microsoft Visual Studio Installer? (y/n): " -ForegroundColor Yellow -NoNewline
 $vsInstallerResponse = Read-Host
 if ($vsInstallerResponse -eq "y" -or $vsInstallerResponse -eq "Y") {
-    Write-Host "Please uninstall Microsoft Visual Studio Installer manually from Windows Settings Programs" -ForegroundColor Cyan
+    Write-Host "Please uninstall Microsoft Visual Studio Installer manually from Settings > Apps" -ForegroundColor Cyan
     Write-Host "Press any key after uninstalling VS Installer..." -ForegroundColor Yellow
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 } else {
-    Write-Host "Skipped Microsoft Visual Studio Installer" -ForegroundColor Gray
+    Write-Host "⊘ Skipped Microsoft Visual Studio Installer" -ForegroundColor Gray
 }
 
 Write-Host "`n=== Cleanup Complete ===" -ForegroundColor Green
-Write-Host "Some applications may require manual removal from Windows Settings Programs or Control Panel" -ForegroundColor Yellow
+Write-Host "Some applications may require manual removal from Settings > Apps or Control Panel" -ForegroundColor Yellow
 Write-Host "You may need to restart your computer to complete the uninstallation process" -ForegroundColor Yellow
 
 # Optional: Clean up remaining folders
@@ -254,59 +256,72 @@ $cleanup = Read-Host
 if ($cleanup -eq "y" -or $cleanup -eq "Y") {
     Write-Host "Cleaning up program folders..." -ForegroundColor Cyan
     $foldersToClean = @(
+        # Python folders
         "$env:LOCALAPPDATA\Programs\Python",
         "$env:APPDATA\Python",
         "$env:PROGRAMFILES\Python*",
+        # Development tools
         "$env:PROGRAMFILES\Git",
         "$env:LOCALAPPDATA\GitHubDesktop",
         "$env:APPDATA\GitHubDesktop",
+        # MySQL folders
         "$env:PROGRAMFILES\MySQL",
         "$env:PROGRAMDATA\MySQL",
+        # Docker folders
         "$env:PROGRAMFILES\Docker",
         "$env:APPDATA\Docker",
         "$env:LOCALAPPDATA\Docker",
+        # R and RStudio
         "$env:PROGRAMFILES\R",
         "$env:LOCALAPPDATA\RStudio",
         "$env:APPDATA\RStudio",
+        # IDEs
         "$env:APPDATA\Code",
         "$env:LOCALAPPDATA\Programs\Microsoft VS Code",
         "$env:APPDATA\cursor",
         "$env:LOCALAPPDATA\Programs\cursor",
+        # JetBrains
         "$env:LOCALAPPDATA\JetBrains",
         "$env:APPDATA\JetBrains",
+        # Node.js
         "$env:PROGRAMFILES\nodejs",
         "$env:APPDATA\npm",
         "$env:LOCALAPPDATA\npm-cache",
+        # Go
         "$env:LOCALAPPDATA\go",
         "$env:APPDATA\go",
+        # Android
         "$env:LOCALAPPDATA\Android",
         "$env:APPDATA\Android",
+        # VirtualBox
         "$env:PROGRAMFILES\Oracle\VirtualBox",
         "$env:LOCALAPPDATA\VirtualBox",
+        # Conda/Miniconda
         "$env:LOCALAPPDATA\miniconda3",
         "$env:LOCALAPPDATA\conda",
         "$env:APPDATA\conda",
+        # Cisco Packet Tracer
         "$env:PROGRAMFILES\Cisco Packet Tracer*",
         "$env:LOCALAPPDATA\Cisco",
+        # Chrome Remote Desktop
         "$env:LOCALAPPDATA\Google\Chrome Remote Desktop",
+        # Arc Browser
         "$env:LOCALAPPDATA\Arc",
         "$env:APPDATA\Arc"
     )
-    
-    foreach ($folder in $foldersToClean) {
+      foreach ($folder in $foldersToClean) {
         if (Test-Path $folder) {
             Write-Host "Do you want to delete $folder? (y/n): " -ForegroundColor Yellow -NoNewline
-            $folderResponse = Read-Host
-            if ($folderResponse -eq "y" -or $folderResponse -eq "Y") {
+            $folderResponse = Read-Host            if ($folderResponse -eq "y" -or $folderResponse -eq "Y") {
                 try {
-                    Remove-Item $folder -Recurse -Force -ErrorAction Stop
-                    Write-Host "Cleaned up $folder" -ForegroundColor Green
+                    Remove-Item $folder -Recurse -Force
+                    Write-Host "✓ Cleaned up $folder" -ForegroundColor Green
                 }
                 catch {
-                    Write-Host "Could not clean up $folder - $($_.Exception.Message)" -ForegroundColor Red
+                    Write-Host "✗ Could not clean up $folder - $($_.Exception.Message)" -ForegroundColor Red
                 }
             } else {
-                Write-Host "Skipped $folder" -ForegroundColor Gray
+                Write-Host "⊘ Skipped $folder" -ForegroundColor Gray
             }
         }
     }
@@ -314,7 +329,7 @@ if ($cleanup -eq "y" -or $cleanup -eq "Y") {
 
 Write-Host "`n=== FINAL MANUAL CLEANUP CHECKLIST ===" -ForegroundColor Magenta
 Write-Host "Please manually verify and remove any remaining items:" -ForegroundColor Yellow
-Write-Host "1. Windows Settings - Search for:" -ForegroundColor Cyan
+Write-Host "1. Settings > Apps - Search for:" -ForegroundColor Cyan
 Write-Host "   - Android Studio" -ForegroundColor White
 Write-Host "   - Node.js" -ForegroundColor White
 Write-Host "   - MySQL Server 8.3/8.0" -ForegroundColor White
@@ -332,5 +347,4 @@ Write-Host "   - JAVA_HOME, PYTHON_PATH, GOPATH variables" -ForegroundColor Whit
 Write-Host "3. Registry cleanup (ADVANCED USERS ONLY):" -ForegroundColor Cyan
 Write-Host "   - Run 'regedit' and clean software entries if needed" -ForegroundColor White
 
-Write-Host "`n=== Script Complete ===" -ForegroundColor Green
-Write-Host "Thank you for using the coding software uninstaller!" -ForegroundColor Cyan
+Write-Host "`nScript completed! Please restart your computer to complete the cleanup." -ForegroundColor Green
